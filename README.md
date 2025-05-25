@@ -16,8 +16,10 @@ Ou acessar diretamente com:
 
 1. Clone o repositório:
 
+   ```
     git clone https://github.com/karelmodel/steam-user-info.git
     cd steam-user-info
+   ```
 
 2. Instale as dependências:
 
