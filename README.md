@@ -1,100 +1,65 @@
-# Steam Info - Meus Jogos na Steam
+# Steam User Info App
 
-Aplicação web em Streamlit que conecta à API da Steam para mostrar seus jogos, conquistas, tempo de jogo e filtros personalizados.
+Um app feito com Streamlit que exibe seus jogos da Steam, conquistas e estatísticas, com filtros e interface visual amigável. Você pode inserir sua API Key e Steam ID manualmente ou via parâmetros na URL.
 
----
+## 🚀 Demonstração
 
-## Funcionalidades
+Você pode abrir a aplicação localmente com:
 
-- Listagem dos jogos possuídos na Steam com nome, horas jogadas e conquistas.
-- Filtragem por nome do jogo, percentual de conquistas e jogos com conquistas.
-- Ordenação por nome, tempo de jogo e percentual de conquistas.
-- Entrada das credenciais (API Key e Steam ID) via interface ou URL (parâmetros GET).
-- Visualização de progresso e estatísticas gerais.
-- Layout responsivo e fácil de usar.
+    streamlit run steam_info.py
 
----
+Ou acessar diretamente com:
 
-## Requisitos
+    http://localhost:8501/?api_key=SUA_API_KEY&steam_id=SEU_STEAM_ID
 
-- Python 3.8+
-- Streamlit
-- Requests
-
----
-
-## Instalação
+## 🔧 Como usar
 
 1. Clone o repositório:
 
-   git clone https://github.com/karelmodel/steam-user-info.git
-   cd steam-user-info
+    git clone https://github.com/karelmodel/steam-user-info.git
+    cd steam-user-info
 
-2. Crie um ambiente virtual (opcional, mas recomendado):
+2. Instale as dependências:
 
-   python -m venv venv
-   source venv/bin/activate   # Linux / macOS
-   venv\Scripts\activate      # Windows
+    pip install -r requirements.txt
 
-3. Instale as dependências:
+3. Execute o app:
 
-   pip install -r requirements.txt
+    streamlit run steam_info.py
 
----
+4. Insira sua API Key e Steam ID na sidebar ou via URL:
 
-## Como usar
+    http://localhost:8501/?api_key=8EB492E4D2D1C5722AF0036C4FE09B74&steam_id=76561198326195917
 
-1. Execute o app localmente:
+## 📦 Requisitos
 
-   streamlit run steam_info.py
+- Python 3.8 ou superior
+- Conta Steam com perfil público
+- API Key da Steam: https://steamcommunity.com/dev/apikey
 
-2. Informe sua API Key e Steam ID na barra lateral ou passe via URL:
+## 📁 Estrutura
 
-   http://localhost:8501/?api_key=SUA_API_KEY&steam_id=SEU_STEAM_ID
+    steam-user-info/
+    ├── steam_info.py         # App principal do Streamlit
+    ├── steam_api.py          # Funções para chamadas à API da Steam
+    ├── ui_renderer.py        # Componentes visuais da interface
+    ├── requirements.txt      # Dependências do projeto
+    ├── .gitignore            # Arquivos ignorados pelo Git
+    └── README.md             # Este arquivo
 
-3. Aproveite a visualização dos seus jogos e conquistas!
+## 🧠 Funcionalidades
 
----
+- Filtro por nome do jogo
+- Filtro por jogos com conquistas
+- Filtro por % de conquistas
+- Ordenação por tempo de jogo, nome ou % de conquistas
+- Barra de progresso de conquistas por jogo
+- Cards de estatísticas gerais
 
-## Deploy
+## 🔐 Segurança
 
-Recomendamos usar o Streamlit Cloud (https://share.streamlit.io) para deploy rápido e gratuito.
+A API Key informada não é armazenada em arquivos, apenas na sessão do navegador ou como parâmetro da URL.
 
-1. Suba seu código para o GitHub (link acima).
-2. Crie uma conta em Streamlit Cloud e conecte ao seu GitHub.
-3. Crie um novo app, selecionando seu repositório e o arquivo steam_info.py.
-4. Clique em Deploy.
+## 📃 Licença
 
----
-
-## Estrutura do projeto
-
-.
-├── steam_info.py         # App principal
-├── steam_api.py          # Módulo de acesso à API Steam
-├── ui_renderer.py        # Funções de renderização da interface
-├── requirements.txt      # Dependências Python
-└── README.md             # Este arquivo
-
----
-
-## Credenciais Steam
-
-- Obtenha sua API Key em: https://steamcommunity.com/dev/apikey
-- Seu Steam ID pode ser encontrado em: https://steamid.io
-
----
-
-## Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para detalhes.
-
----
-
-## Contato
-
-Karel - [seu-email@example.com]
-
----
-
-Divirta-se explorando seus jogos na Steam! 🎮
+MIT
