@@ -71,7 +71,7 @@ a, a:visited { color: #82aaff; }
     background-color: #1e1e1e;
     border-radius: 12px;
     padding: 15px;
-    margin-bottom: 60px;  /* Espaçamento maior entre os jogos */
+    margin-bottom: 30px;
     box-shadow: 0 0 8px #111;
     transition: box-shadow 0.3s ease;
 }
@@ -89,8 +89,24 @@ a, a:visited { color: #82aaff; }
 </style>
 """
 
+# Script para alterar o tooltip padrão do input (texto do navegador)
+tooltip_fix_script = """
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input[type="text"]');
+    inputs.forEach(input => {
+        // Muda o atributo title para português
+        if(input.title === "Press Enter to apply") {
+            input.title = "Pressione Enter para aplicar";
+        }
+    });
+});
+</script>
+"""
+
 def apply_styles():
     st.markdown(dark_style, unsafe_allow_html=True)
+    st.markdown(tooltip_fix_script, unsafe_allow_html=True)
 
 def render_progress_bar(percent: int):
     color = "gold" if percent == 100 else "#3b82f6" if percent > 0 else "#444"
