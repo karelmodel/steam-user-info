@@ -71,7 +71,7 @@ a, a:visited { color: #82aaff; }
     background-color: #1e1e1e;
     border-radius: 12px;
     padding: 15px;
-    margin-bottom: 40px;  /* Aumentado o espaçamento entre os jogos */
+    margin-bottom: 60px;  /* Espaçamento maior entre os jogos */
     box-shadow: 0 0 8px #111;
     transition: box-shadow 0.3s ease;
 }
