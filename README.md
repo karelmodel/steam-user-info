@@ -31,11 +31,13 @@ Ou acessar diretamente com:
 
    ```
     streamlit run steam_info.py
-    ```
+   ```
 
 4. Insira sua API Key e Steam ID na sidebar ou via URL:
 
+   ```
     http://localhost:8501/?api_key=8EB492E4D2D1C5722AF0036C4FE09B74&steam_id=76561198326195917
+   ```
 
 ## 📦 Requisitos
 
