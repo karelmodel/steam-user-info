@@ -23,11 +23,15 @@ Ou acessar diretamente com:
 
 2. Instale as dependências:
 
-    pip install -r requirements.txt
+   ```
+   pip install -r requirements.txt 
+   ```
 
 3. Execute o app:
 
+   ```
     streamlit run steam_info.py
+    ```
 
 4. Insira sua API Key e Steam ID na sidebar ou via URL:
 
