@@ -1,4 +1,5 @@
 import streamlit as st
+from datetime import datetime
 
 dark_style = """
 <style>
@@ -30,8 +31,10 @@ a, a:visited { color: #82aaff; }
 }
 .card-container {
     display: flex;
+    flex-wrap: wrap; /* permite quebra de linha */
     gap: 20px;
     margin-bottom: 30px;
+    justify-content: center; /* centraliza horizontalmente */
 }
 .card {
     padding: 20px;
@@ -41,6 +44,8 @@ a, a:visited { color: #82aaff; }
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: default;
     text-align: center;
+    flex: 1 1 200px; /* flex-grow, flex-shrink, flex-basis mínimo */
+    max-width: 300px;
 }
 .card:hover {
     transform: translateY(-8px);
@@ -74,17 +79,31 @@ a, a:visited { color: #82aaff; }
     margin-bottom: 60px;  /* Espaçamento maior entre os jogos */
     box-shadow: 0 0 8px #111;
     transition: box-shadow 0.3s ease;
+    display: flex;
+    flex-wrap: wrap; /* Permite quebra interna para colunas */
+    gap: 15px;
 }
 .game-card:hover {
     box-shadow: 0 0 16px #3b82f6;
 }
 .game-card h2 {
     margin: 0 0 6px 0;
+    flex-basis: 100%; /* título ocupa linha toda */
 }
 .game-card .info {
     color: #bbb;
     font-size: 0.9em;
     margin-bottom: 8px;
+    flex-basis: 100%; /* info ocupa linha toda */
+}
+.game-card .col1, .game-card .col2 {
+    flex: 1 1 200px;
+    min-width: 150px;
+}
+.game-card .col1 img {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
 }
 </style>
 """
@@ -102,82 +121,77 @@ def render_progress_bar(percent: int):
     st.markdown(bar_html, unsafe_allow_html=True)
 
 def render_stats_cards(total_games: int, total_achievements: int, avg_percent_achievements: float, total_hours: int):
-    col1, col2, col3, col4 = st.columns(4)
-    
-    with col1:
-        st.markdown(f'''
+    st.markdown('<div class="card-container">', unsafe_allow_html=True)
+
+    st.markdown(f'''
         <div class="card card-total-games">
             <h3>🎮 Jogos</h3>
             <p>{total_games}</p>
         </div>
-        ''', unsafe_allow_html=True)
+    ''', unsafe_allow_html=True)
 
-    with col2:
-        st.markdown(f'''
+    st.markdown(f'''
         <div class="card card-total-achievements">
             <h3>🏅 Conquistas</h3>
             <p>{total_achievements}</p>
         </div>
-        ''', unsafe_allow_html=True)
+    ''', unsafe_allow_html=True)
 
-    with col3:
-        st.markdown(f'''
+    st.markdown(f'''
         <div class="card card-avg-achievements">
             <h3>🧠 % de Conquistas</h3>
             <p>{avg_percent_achievements:.2f}%</p>
         </div>
-        ''', unsafe_allow_html=True)
+    ''', unsafe_allow_html=True)
 
-    with col4:
-        st.markdown(f'''
+    st.markdown(f'''
         <div class="card card-total-hours">
             <h3>⏱️ Tempo de Jogo</h3>
             <p>{total_hours} horas</p>
         </div>
-        ''', unsafe_allow_html=True)
+    ''', unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def render_game_card(game, achievements):
-    col1, col2 = st.columns([1.2, 4])
     appid = game['appid']
     header_url = f"https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/{appid}/header.jpg"
     store_url = f"https://store.steampowered.com/app/{appid}/"
 
-    with col1:
-        st.markdown(f"[![{appid}]({header_url})]({store_url})", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class="game-card">
+        <div class="col1">
+            <a href="{store_url}" target="_blank" rel="noopener noreferrer">
+                <img src="{header_url}" alt="{game.get('name', 'Jogo')}" />
+            </a>
+        </div>
+        <div class="col2">
+            <h2>{game.get('name', 'Sem nome')}</h2>
+    """, unsafe_allow_html=True)
 
-    with col2:
-        st.subheader(game.get("name", "Sem nome"))
-        hours = game['playtime_forever'] // 60
-        last_played = game.get("rtime_last_played", 0)
-        from datetime import datetime
-        if last_played > 0:
-            last_played_str = datetime.utcfromtimestamp(last_played).strftime("%d/%m/%Y")
-        else:
-            last_played_str = "Nunca"
+    hours = game['playtime_forever'] // 60
+    last_played = game.get("rtime_last_played", 0)
+    if last_played > 0:
+        last_played_str = datetime.utcfromtimestamp(last_played).strftime("%d/%m/%Y")
+    else:
+        last_played_str = "Nunca"
 
-        st.caption(f"🕒 {hours} horas jogadas (Último jogo: {last_played_str})")
+    st.markdown(f'<div class="info">🕒 {hours} horas jogadas (Último jogo: {last_played_str})</div>', unsafe_allow_html=True)
 
-        achievement_list = achievements.get("achievements", [])
-        total = len(achievement_list)
-        current = sum(1 for a in achievement_list if a.get("achieved") == 1)
-        percent = round((current / total) * 100) if total > 0 else 0
+    achievement_list = achievements.get("achievements", [])
+    total = len(achievement_list)
+    current = sum(1 for a in achievement_list if a.get("achieved") == 1)
+    percent = round((current / total) * 100) if total > 0 else 0
 
-        st.markdown(
-            f'<div class="achievement-count">🏅 {current} de {total} conquistas concluídas</div>',
-            unsafe_allow_html=True
-        )
-        render_progress_bar(percent)
+    st.markdown(f'<div class="achievement-count">🏅 {current} de {total} conquistas concluídas</div>', unsafe_allow_html=True)
+    render_progress_bar(percent)
 
-        if total == 0:
-            st.markdown(
-                f'<div class="no-achievements-msg">❗ Este jogo não possui conquistas.</div>',
-                unsafe_allow_html=True,
-            )
-        elif percent == 100:
-            st.markdown(
-                f'<div class="message-silver">🏆 Todas as conquistas obtidas!</div>',
-                unsafe_allow_html=True,
-            )
+    if total == 0:
+        st.markdown(f'<div class="no-achievements-msg">❗ Este jogo não possui conquistas.</div>', unsafe_allow_html=True)
+    elif percent == 100:
+        st.markdown(f'<div class="message-silver">🏆 Todas as conquistas obtidas!</div>', unsafe_allow_html=True)
+
+    st.markdown("</div></div>", unsafe_allow_html=True)
 
 def render_filters_sidebar():
     st.sidebar.header("Filtros")
