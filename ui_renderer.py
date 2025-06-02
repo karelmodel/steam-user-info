@@ -162,7 +162,11 @@ def render_game_card(game, achievements):
         st.markdown(f"[![{appid}]({header_url})]({store_url})", unsafe_allow_html=True)
 
     with col2:
-        st.subheader(game.get("name", "Sem nome"))
+        st.markdown(f"""
+            <div style='font-size: 1.75rem; font-weight: 600; margin: 0; padding: 0;'>
+                {game.get("name", "Sem nome")}
+            </div>
+        """, unsafe_allow_html=True)
         hours = game['playtime_forever'] // 60
         last_played = game.get("rtime_last_played", 0)
         from datetime import datetime
