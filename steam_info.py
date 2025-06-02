@@ -7,6 +7,7 @@ st.set_page_config(
     page_icon="🎮",  # Ícone da aba (pode ser emoji ou URL)
     layout="wide"
 )
+apply_styles()
 
 st.title("🎮 Meus Jogos na Steam")
 
