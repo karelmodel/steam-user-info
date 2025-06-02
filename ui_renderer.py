@@ -214,3 +214,32 @@ def render_filters_sidebar():
         "ordenar_por": ordenar_por,
         "somente_com_conquistas": somente_com_conquistas
     }
+
+def render_missing_achievements(missing_achievements, game_name=""):
+    if not missing_achievements:
+        return
+
+    # Ordena por título em ordem alfabética
+    missing_achievements = sorted(missing_achievements, key=lambda ach: ach.get("title", "").lower())
+
+    # Título do expander com o nome do jogo
+    header = f"🎯 Conquistas Faltantes ({len(missing_achievements)}) de **{game_name}**"
+
+    with st.expander(header):
+        for ach in missing_achievements:
+            title = ach.get("title", "")
+            description = ach.get("description", "")
+
+            is_hidden = description == "Sem descrição"
+            
+            if is_hidden:
+                title = f"🔒 {title}"
+                description = "Conquista oculta - desbloqueie para ver a descrição"
+            else:
+                title = f"🏅 {title}"
+
+            st.markdown(f"""
+                <div style="margin-bottom: 12px;">
+                    <span style="font-weight: bold;">{title}:</span> <span style="color: #aaa;">{description}</span>
+                </div>
+            """, unsafe_allow_html=True)

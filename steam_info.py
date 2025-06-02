@@ -2,9 +2,21 @@ import streamlit as st
 import steam_api
 from ui_renderer import render_game_card, render_filters_sidebar, apply_styles, render_stats_cards
 
-st.set_page_config(page_title="Meus Jogos na Steam", layout="wide")
-apply_styles()
+st.set_page_config(
+    page_title="🎮 Meus Jogos na Steam",  # Título da aba do navegador
+    page_icon="🎮",  # Ícone da aba (pode ser emoji ou URL)
+    layout="wide"
+)
+
 st.title("🎮 Meus Jogos na Steam")
+
+# === BOTÃO PARA LIMPAR CACHE ===
+st.sidebar.markdown("## ⚙️ Opções")
+if st.sidebar.button("🔄 Recarregar dados"):
+    st.cache_data.clear()
+    st.cache_resource.clear()
+    st.success("Cache limpo! Recarregando...")
+    st.rerun()
 
 if "api_key" not in st.session_state:
     st.session_state.api_key = ""
@@ -113,4 +125,13 @@ render_stats_cards(
 st.markdown("---")
 
 for game in filtered_games:
-    render_game_card(game, game["achievements_data"])
+    achievements_data = game["achievements_data"]
+    render_game_card(game, achievements_data)
+
+    missing = steam_api.get_missing_achievements(
+        st.session_state.api_key,
+        st.session_state.steam_id,
+        game["appid"]
+    )
+    from ui_renderer import render_missing_achievements
+    render_missing_achievements(missing, game_name=game['name'])
