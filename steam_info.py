@@ -3,7 +3,7 @@ import steam_api
 from ui_renderer import render_game_card, render_filters_sidebar, apply_styles, render_stats_cards
 
 st.set_page_config(
-    page_title="🎮 Meus Jogos na Steam",  # Título da aba do navegador
+    page_title="Meus Jogos na Steam",  # Título da aba do navegador
     page_icon="🎮",  # Ícone da aba (pode ser emoji ou URL)
     layout="wide"
 )
